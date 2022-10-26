@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
               } else {
                 return const SignInScreen();
               }
-            }),
+            }),//
         //   home: //   FirebaseAuth.instance.currentUser ==null ?SignInScreen():HomeScreen(),
         routes: {
           SignInScreen.routeName: (context) => SignInScreen(),
