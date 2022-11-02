@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:demo_project/presention/screens/home_screen.dart';
@@ -14,6 +15,9 @@ class AuthCubit extends Cubit<AuthState> {
   var formKey = GlobalKey<FormState>(); //sign in
   var formKey2 = GlobalKey<FormState>(); //sign up
   var email = TextEditingController();
+  var name = TextEditingController();
+  var adress = TextEditingController();
+  var birthDate = TextEditingController();
   var password = TextEditingController();
   var confirmPasssword = TextEditingController();
   AuthCubit() : super(AuthInitial());
@@ -60,6 +64,14 @@ class AuthCubit extends Cubit<AuthState> {
     var res = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email.text, password: password.text);
     if (res.user != null) {
+      // code upload data in firebase
+      FirebaseFirestore.instance.collection('users').doc(res.user!.uid).set({
+        'name': name.text,
+        'email': email.text,
+        'adress': adress.text,
+        'birthDate': birthDate.text,
+      }, SetOptions(merge: true)
+      );
       Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
     } else {
       print("error");

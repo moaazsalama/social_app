@@ -11,60 +11,94 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var authCubit = BlocProvider.of<AuthCubit>(context);
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "SignUp",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
             key: authCubit.formKey2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MyTextField(
-                  controller: authCubit.email,
-                  hintText: "Please Enter Your Name ",
-                  labelText: "Name",
-                  type: TextInputType.text,
-                  password: false,
-                  validator: authCubit.nameValdation,
-                ),
-                MyTextField(
-                  controller: authCubit.password,
-                  hintText: "Please Enter Your Password ",
-                  labelText: "Password",
-                  type: TextInputType.text,
-                  password: true,
-                  validator: authCubit.passwordValidate,
-                ),
-                MyTextField(
-                  controller: authCubit.confirmPasssword,
-                  hintText: "Please Enter Your password ",
-                  labelText: "Confirm Password",
-                  type: TextInputType.text,
-                  password: true,
-                  validator: authCubit.conPasswordValidate,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      authCubit.signUp(context);
-                    }
-                    ,
-                    child: const Text('Sign Up')),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, SignInScreen.routeName);
-                    },
-                    child: const Text(
-                      "Are you already have an account ?!",
-                      textAlign: TextAlign.center,
-                    ))
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MyTextField(
+                    controller: authCubit.email,
+                    hintText: "Please Enter Your Name ",
+                    labelText: "email",
+                    type: TextInputType.text,
+                    password: false,
+                    validator: authCubit.nameValdation,
+                  ),
+                  MyTextField(
+                    controller: authCubit.adress,
+                    hintText: "Please Enter Your Name ",
+                    labelText: "Adress",
+                    type: TextInputType.text,
+                    password: false,
+                    validator: authCubit.nameValdation,
+                  ),
+                  MyTextField(
+                    controller: authCubit.birthDate,
+                    hintText: "Please Enter Your Name ",
+                    labelText: "BirthDate",
+                    type: TextInputType.text,
+                    password: false,
+                    validator: authCubit.nameValdation,
+                  ),
+                  MyTextField(
+                    controller: authCubit.name,
+                    hintText: "Please Enter Your Name ",
+                    labelText: "Name",
+                    type: TextInputType.text,
+                    password: false,
+                    validator: authCubit.nameValdation,
+                  ),
+                  MyTextField(
+                    controller: authCubit.password,
+                    hintText: "Please Enter Your Password ",
+                    labelText: "Password",
+                    type: TextInputType.text,
+                    password: true,
+                    validator: authCubit.passwordValidate,
+                  ),
+                  MyTextField(
+                    controller: authCubit.confirmPasssword,
+                    hintText: "Please Enter Your password ",
+                    labelText: "Confirm Password",
+                    type: TextInputType.text,
+                    password: true,
+                    validator: authCubit.conPasswordValidate,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        authCubit.signUp(context);
+                      }
+                      ,
+                      child: const Text('Sign Up')),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, SignInScreen.routeName);
+                      },
+                      child: const Text(
+                        "Are you already have an account ?!",
+                        textAlign: TextAlign.center,
+                      ))
+                ],
+              ),
             ),
           ),
         ),
