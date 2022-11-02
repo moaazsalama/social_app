@@ -93,12 +93,14 @@ class MyTextField extends StatelessWidget {
     this.hintText,
     this.validator,
     this.type,
-    this.password = false,
+    this.password = false, this.minLines, this.border,
   }) : super(key: key);
 
   final TextEditingController? controller;
   final String? labelText, hintText;
- 
+  final int? minLines;
+  final InputBorder? border;
+
   final String? Function(String?)? validator;
   final TextInputType? type;
   final bool password;
@@ -106,9 +108,13 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
+        border: border,
         labelText: labelText,
         hintText: hintText,
+        
       ),
+      minLines: minLines,
+      maxLines: minLines,
       validator: validator,
       controller: controller,
       keyboardType: type,
