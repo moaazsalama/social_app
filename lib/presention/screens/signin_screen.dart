@@ -40,22 +40,23 @@ class SignInScreen extends StatelessWidget {
                   hintText: "Please Enter Your Password ",
                   labelText: "Password",
                   type: TextInputType.text,
+                 minLines: 1,
                   password: true,
                   validator: authCubit.passwordValidate,
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                ElevatedButton(onPressed: () {
-                  var validate = authCubit.formKey.currentState!.validate();
-                  if (validate) {
-                    //TODO : sign in
-      
-                   authCubit.signIn(
-                    context
-                   );
-                  }
-                }, child: Text('Sign In')),
+                ElevatedButton(
+                    onPressed: () {
+                      var validate = authCubit.formKey.currentState!.validate();
+                      if (validate) {
+                        //TODO : sign in
+
+                        authCubit.signIn(context);
+                      }
+                    },
+                    child: Text('Sign In')),
                 SizedBox(
                   height: 10,
                 ),
@@ -93,7 +94,9 @@ class MyTextField extends StatelessWidget {
     this.hintText,
     this.validator,
     this.type,
-    this.password = false, this.minLines, this.border,
+    this.password = false,
+    this.minLines,
+    this.border,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -111,9 +114,8 @@ class MyTextField extends StatelessWidget {
         border: border,
         labelText: labelText,
         hintText: hintText,
-        
       ),
-      minLines: minLines,
+      // minLines: minLines,
       maxLines: minLines,
       validator: validator,
       controller: controller,
