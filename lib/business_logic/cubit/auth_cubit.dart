@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:demo_project/presention/screens/home_screen.dart';
@@ -59,19 +61,26 @@ class AuthCubit extends Cubit<AuthState> {
         return response;
   }
 
-  void signUp(BuildContext context) async {
+  void signUp(BuildContext context, File? image) async {
       // signUpApi(email.text, password.text);
     var res = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email.text, password: password.text);
     if (res.user != null) {
       // code upload data in firebase
-      FirebaseFirestore.instance.collection('users').doc(res.user!.uid).set({
+     await FirebaseFirestore.instance.collection('users').doc(res.user!.uid).set({
         'name': name.text,
         'email': email.text,
         'adress': adress.text,
         'birthDate': birthDate.text,
       }, SetOptions(merge: true)
       );
+      var storage = FirebaseStorage.instance;
+      if(image!=null) {
+        var putFile = storage.ref("users/${res.user?.uid}").putFile(image);
+        putFile.asStream().listen((event) {
+          print(event.bytesTransferred);
+        });
+      }
       Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
     } else {
       print("error");
@@ -81,6 +90,6 @@ class AuthCubit extends Cubit<AuthState> {
   void signIn(BuildContext context) async {
     var userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email.text, password: password.text);
-    
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>HomeScreen()));
   }
 }

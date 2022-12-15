@@ -1,12 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../business_logic/cubit/auth_cubit.dart';
 import 'signin_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
   static const routeName = "/sign-up";
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  File? image;
   @override
   Widget build(BuildContext context) {
     var authCubit = BlocProvider.of<AuthCubit>(context);
@@ -17,7 +27,6 @@ class SignUpScreen extends StatelessWidget {
           "SignUp",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-      
       ),
       body: Center(
         child: Padding(
@@ -28,6 +37,28 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.blue,
+                    backgroundImage: image != null ? FileImage(image!) : null,
+                  ),
+                  
+                  //Elevted 
+                  //Text Button 
+                  //Floating Action 
+                  //Material Button 
+                  //Outlind Button
+                  TextButton(
+                    onPressed: () async{
+                     var file = await ImagePicker.platform.getImage(source: ImageSource.camera);
+                     if( file!=null){
+                      setState(() {
+                        image=File(file.path);
+                      });
+                     }
+                    },
+                    child: Text("Chose Image"),
+                  ),
                   MyTextField(
                     controller: authCubit.email,
                     hintText: "Please Enter Your Name ",
@@ -65,6 +96,7 @@ class SignUpScreen extends StatelessWidget {
                     hintText: "Please Enter Your Password ",
                     labelText: "Password",
                     type: TextInputType.text,
+                    minLines: 1,
                     password: true,
                     validator: authCubit.passwordValidate,
                   ),
@@ -74,6 +106,7 @@ class SignUpScreen extends StatelessWidget {
                     labelText: "Confirm Password",
                     type: TextInputType.text,
                     password: true,
+                    minLines: 1,
                     validator: authCubit.conPasswordValidate,
                   ),
                   const SizedBox(
@@ -81,9 +114,8 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        authCubit.signUp(context);
-                      }
-                      ,
+                        authCubit.signUp(context,image);
+                      },
                       child: const Text('Sign Up')),
                   const SizedBox(
                     height: 10,
